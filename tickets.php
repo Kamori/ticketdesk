@@ -23,10 +23,18 @@ $('#tickets').addClass("active");
 <div id="content">
 
 <?php
+if (isset($_GET['ticketId'])){
+	$rTicket = $_GET['ticketId'];
+} elseif (isset($_POST['ticketId'])){
+	$rTicket = $_POST['ticketId'];
+} else {
+	$rTicket = NULL;
+}
 
+error_log($rTicket);
 if (isset($_POST['updateTicket'])) {
 	$ticket = new ticket();
-	$ticket->getTicket($_POST['ticketId']);
+	$ticket->getTicket($rTicket);
 	$ticket->setAssignedUser($_POST['assignedUser']);
 	$ticket->setStatus($_POST['status']);
 	if ($_POST['ticketNote'] != "") {
@@ -79,44 +87,43 @@ echo '<br>';
 	<div id="displayTickets" class="panel panel-default">
         	<div class="panel-heading">Tickets</div>
         	<?php
-        	if (isset($_POST['ticketId'])) {
+        	if (isset($rTicket)) {
         	
 	        	
         	}
 
         	
-        	if ($_GET['ticketId'] == 'all') { 
+        	if ($rTicket == 'all') {
         	
         		echo 'All tickets';
         		ticket::displayTickets('all');
         		
         	}
-        	elseif ($_GET['ticketId'] == 'mine') {
+        	elseif ($rTicket == 'mine') {
         		echo 'My Tickets'; 
         		ticket::displayTickets('mine');
         	}
-        	elseif ($_GET['ticketId'] == 'open') { 
+        	elseif ($rTicket == 'open') {
         		echo 'Open tickets';
         		ticket::displayTickets('Open');
         		
         	}
-		elseif ($_GET['ticketId'] == 'woa') { 
+		elseif ($rTicket == 'woa') {
 			echo 'Waiting on agent';
 			ticket::displayTickets('Waiting on agent');
 		}
-		elseif ($_GET['ticketId'] == 'woc') { 
+		elseif ($rTicket == 'woc') {
 			echo 'Waiting on client';
 			ticket::displayTickets('Waiting on client');
 			}
-		elseif ($_GET['ticketId'] == 'closed') { 
+		elseif ($rTicket == 'closed') {
 			echo 'closed';
 			ticket::displayTickets('Closed');
 		}
 		else {
 			echo '<div class="panel-body">';
         		$ticket = new ticket();
-        		if (isset($_POST['ticketId'])) {$ticket->getTicket($_POST['ticketId']);}
-        		if (isset($_GET['ticketId'])) {$ticket->getTicket($_GET['ticketId']);}
+        		if (isset($rTicket)) {$ticket->getTicket($rTicket);}
 
         		$category = new category();
         		$category->getCategory($ticket->getCategoryId());
