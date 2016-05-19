@@ -5,11 +5,6 @@ $mysqli = dbConnect();
 
 $selectvalue =  $_GET['svalue'];
 
-if (!is_numeric($selectvalue)){
-	echo "Invalid Data";
-	exit;
-}
-
 $sql = "select sc.name as subcategoryname,
 		c.name as categoryname,
 		c.id as categoryid,
@@ -18,8 +13,6 @@ $sql = "select sc.name as subcategoryname,
 		where sc.categoryid = c.id
 		and sc.categoryid = $selectvalue";
 $result = $mysqli->query($sql);
-
-$mysqli->close();
 
 if ($result->num_rows > 0) {
 	// output data of each row
@@ -38,7 +31,8 @@ if ($result->num_rows > 0) {
 } else {
 	
 }
-
+$mysqli->close();   
+ 
 
 
 

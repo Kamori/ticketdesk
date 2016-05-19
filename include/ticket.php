@@ -19,7 +19,6 @@ class ticket {
 	private $id;
 	private $clientNumber;
 	private $user;
-	private $subject;
 	private $categoryId;
 	private $status;
 	private $subCategoryId;	
@@ -41,7 +40,6 @@ class ticket {
        		$this->id = $ticketParameters['id'];
        		$this->clientNumber = $ticketParameters['clientNumber'];
        		$this->user = $ticketParameters['user'];
-       		$this->subject = $ticketParameters['subject'];
        		$this->categoryId = $ticketParameters['categoryId'];
        		$this->subCategoryId = $ticketParameters['subCategoryId'];
        		$this->comments = $ticketParameters['comments'];
@@ -57,14 +55,13 @@ class ticket {
     	 * Adds the ticket to the database
    	 */
    	public function addTicket($isClosed) {
-		$prep_stmt = "insert into tickets (clientNumber,user,subject,categoryid,subcategoryid,comments,transferYn,transferDeptId,openDate,parentTicketId,assignedUser)" .
-		 	     "values(?,?,?,?,?,?,?,?,NOW(),?,?)";
+		$prep_stmt = "insert into tickets (clientNumber,user,categoryid,subcategoryid,comments,transferYn,transferDeptId,openDate,parentTicketId,assignedUser)" .
+		 	     "values(?,?,?,?,?,?,?,NOW(),?,?)";
 		$parentTicketId = 0;
 		if ($insert_stmt = $this->mysqli->prepare($prep_stmt)) {
-			$insert_stmt->bind_param('issiisiiis',$this->clientNumber,
+			$insert_stmt->bind_param('isiisiiis',$this->clientNumber,
 						$this->user,
-						$this->subject,
-						$this->categoryId,						
+						$this->categoryId,
 						$this->subCategoryId,
 						$this->comments,
 						$this->transferYn,
@@ -115,7 +112,6 @@ class ticket {
 			while($row = $result->fetch_assoc()) {
 		       		$this->clientNumber = $row['clientnumber'];
 		       		$this->user = $row['user'];
-		       		$this->subject = $row['subject'];
 		       		$this->categoryId = $row['categoryid'];
 		       		$this->subCategoryId = $row['subcategoryid'];
 		       		$this->comments = $row['comments'];
@@ -366,15 +362,13 @@ class ticket {
 		if ($result->num_rows > 0) {
 			// output data of each row
 			while($row = $result->fetch_assoc()) {
-				$comments = $row['comments'];
-				$comments = (strlen($comments) > 340) ? substr($comments, 0, 340) . '...' : $comments;
 				if ($row['status'] == 'Closed') { $class = "btn btn-danger";}
 				elseif ($row['status'] == 'Open') { $class = "btn btn-success";}
 				elseif ($row['status'] == 'Waiting on Client') {$class = "btn btn-info";} 
 				else { $class = "btn btn-warning"; }
 		       		echo '<tr>
 				       			<td>' .$row['clientnumber'] .'</td>
-				       			<td>' . $comments  .'</td>
+				       			<td>' . $row['comments']  .'</td>
 				       			<td>' . $row['assigneduser'] . '</td>
 				       			<td><form method="POST" action="./tickets.php">
 				       				<input name="ticketId" value="' . $row['ticketid'] . '" type="text" hidden />
@@ -394,7 +388,6 @@ class ticket {
 	public function setId($id) {$this->id = $id;}
 	public function setClientId($clientId) {$this->clientNumber = $clientId;}
 	public function setUser($user) {$this->user = $user;}
-	public function setSubject($subject) {$this->subject = $subject;}
 	public function setStatus($status) {$this->status = $status;}
 	public function setCategoryId($categoryId) {$this->categoryId = $categoryId;}
 	public function setSubCategoryId($subCategoryId) {$this->subCategoryId = $subCategoryId;}
@@ -407,7 +400,6 @@ class ticket {
 	public function getId() {return	 $this->id;}
 	public function getClientId() {return $this->clientNumber;}
 	public function getUser() {return $this->user;}
-	public function getSubject() {return $this->subject;}
 	public function getComments() {return $this->comments;}
 	public function getStatus() {return $this->status;}
 	public function getCategoryId() {return $this->categoryId;}

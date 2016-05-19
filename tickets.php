@@ -33,7 +33,7 @@ if (isset($_POST['updateTicket'])) {
 		$ticket->addNote($_POST['ticketNote']);
 	}
 	if ($_POST['previousAssignedUser'] != $_POST['assignedUser']) {
-		$user = user::withUserName($ticket->getAssignedUser());
+		$user = user::withUserName($_SESSION['username']);
 		
 		$system = new system();
 		$settingName = 'system email';
@@ -144,14 +144,6 @@ echo '<br>';
 			                    	$ticket->getClientId() . '" />
 			                    </div>
 			                </div>	
-
-			                <div class="form-group">
-			                    <label for="subject" class="col-sm-2 control-label">Subject:</label>
-			                    <div class="col-sm-10"> 
-			                    	<input class="form-control" name="subject" disabled type="text"  value="' . 
-			                    	$ticket->getSubject() . '" />
-			                    </div>
-			                </div>				                
 
 			                <div class="form-group">
 			                    <label for="comments" class="col-sm-2 control-label">Description:</label>

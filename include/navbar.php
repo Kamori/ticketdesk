@@ -32,7 +32,7 @@ error_reporting(E_ALL);
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="main.php">Ticket Desk</a>
+            <a class="navbar-brand" href="/ticketdesk/main.php">Ticket Desk</a>
         </div>
         
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -51,7 +51,7 @@ error_reporting(E_ALL);
                         <li><a href="./tickets.php?ticketId=closed">Closed</a></li>
                     </ul>
                 </li>
-                <li id="reports"><a href="reports.php">Reports</a></li>
+                <li id="reports"><a href="/ticketdesk/reports.php">Reports</a></li>
                 <li id="system" class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">System <span class="caret"></span></a>
                     <ul class="dropdown-menu ">
