@@ -36,7 +36,10 @@ class database
             $this->connect();
             $results = $this->dbh->prepare($query);
             $results->execute($params);
-            $results = $results->fetchAll();
+            if(stripos($query, "select") === 0)
+                $results = $results->fetchAll();
+            else
+                $results = array("newid"=>$this->dbh->lastInsertId());
             $this->disconnect();
         } catch(PDOException $e){
             $results = array("error"=>$e->getMessage(),
