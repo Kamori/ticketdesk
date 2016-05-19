@@ -21,6 +21,8 @@ class database
         $this->dbh = new PDO("mysql:host={$this->host};dbname={$this->dbname}", $this->user, $this->pass, $options);
         $this->dbh->setAttribute(PDO::ATTR_AUTOCOMMIT,0);
         $this->dbh->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $this->dbh;
     }
 
     private function disconnect()
@@ -28,31 +30,34 @@ class database
         $this->dbh = null;
     }
 
-
-    public function getError()
-    {
-        $this->connect();
-        $results = $this->dbh->errorInfo();
-        $this->disconnect();
-        return $results;
-    }
-
     public function prepare($query, array $params)
     {
-        $this->connect();
-        $results = $this->dbh->prepare($query);
-        $results->execute($params);
-        $results = $results->fetchAll();
-        $this->disconnect();
+        try {
+            $this->connect();
+            $results = $this->dbh->prepare($query);
+            $results->execute($params);
+            $results = $results->fetchAll();
+            $this->disconnect();
+        } catch(PDOException $e){
+            $results = array("error"=>$e->getMessage(),
+                             "code"=>$e->getCode(),
+                             "stacktrace"=>$e->getTrace());
+        }
         return $results;
     }
 
     public function query($query)
     {
-        $this->connect();
-        $results = $this->dbh->query($query);
-        $results = $results->fetchAll();
-        $this->disconnect();
+        try {
+            $this->connect();
+            $results = $this->dbh->query($query);
+            $results = $results->fetchAll();
+            $this->disconnect();
+        } catch(PDOException $e){
+            $results = array("error"=>$e->getMessage(),
+                             "code"=>$e->getCode(),
+                             "stacktrace"=>$e->getTrace());
+        }
         return $results;
     }
 
