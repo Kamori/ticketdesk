@@ -76,6 +76,12 @@ if (isset($_POST['addQuickTicket'])) {
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="subject" class="col-sm-2 control-label">Subject</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="subject" name="subject">
+                    </div>
+                </div>                
+                <div class="form-group">
                     <label for="category" class="col-sm-2 control-label">Category</label>
                     <div class="col-sm-10">
                         <select class="form-control" id="categoryId" name="categoryId">
@@ -90,9 +96,9 @@ if (isset($_POST['addQuickTicket'])) {
 
                         
                 <div class="form-group">
-                    <label for="comments" class="col-sm-2 control-label">Comments</label>
+                    <label for="comments" class="col-sm-2 control-label">Details</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="comments" placeholder="blah blah blah... you get it!">
+                        <textarea class="form-control verticalonly" name="comments" placeholder="Detailed info for this ticket..."></textarea>
                     </div>
                 </div>
                 <div class="form-group">

@@ -21,6 +21,11 @@
 #displayTickets {
 
 }
+
+.verticalonly{
+    width:100%;
+    resize:vertical;
+}
 #loginPanel {
     margin:2em;
 }

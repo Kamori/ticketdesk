@@ -5,7 +5,8 @@ include_once 'include/functions.php';
 sec_session_start();
  
 if (login_check(dbConnect()) == true) {
-    $logged = 'in';
+    #$logged = 'in';
+    header('location: main.php');
 } else {
     $logged = 'out';
 }
@@ -20,10 +21,13 @@ if (login_check(dbConnect()) == true) {
 
 
 <script>
-function checkSubmit(e)
+function checkSubmit(e, dom)
 {
    if(e && e.keyCode == 13)
    {
+       var form = document.getElementById("login_form");
+       var password = document.getElementById("password");
+       formhash(form, password);
       document.forms[0].submit();
    }
 }
@@ -45,11 +49,11 @@ function checkSubmit(e)
 		            echo '<p class="alert alert-danger">Error logging in, please try again.</p>';
 		        }
 		        ?> 
-			<form action="include/process_login.php" method="post" name="login_form" >
+			<form action="include/process_login.php" method="post" name="login_form" id="login_form" onKeyPress="return checkSubmit(event, this)">
 			    <div class="form-group">
 			        <label class="col-sm-2 control-label">Username</label>
 			        <div class="col-sm-10">
-				        <input type="text" name="email" class="form-control" placeholder="user@email.com" aria-describedby="basic-addon1">
+				        <input type="text" name="email" id="email" class="form-control" placeholder="user@email.com" aria-describedby="basic-addon1">
 				    </div>
 			    </div>
 			    <div class="form-group">
@@ -62,7 +66,7 @@ function checkSubmit(e)
 		        <div class="form-group">
 		            <div class="col-sm-2"></div>
 		            <div class="col-sm-10">
-		                <div class="btn-toolbar" style="margin:1em 0 1em -5px;" role="toolbar" onKeyPress="return checkSubmit(event)" aria-label="...">
+		                <div class="btn-toolbar" style="margin:1em 0 1em -5px;" role="toolbar" aria-label="...">
                             <div class="btn-group" role="group" aria-label="...">
                                 <button type="button" value="Login" id="Login" onclick="formhash(this.form, this.form.password);" class="btn btn-success">Log In</button>
                             </div>
